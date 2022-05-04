@@ -2,20 +2,29 @@ import * as React from 'react';
 
 import { List } from 'react-native-paper';
 
+import { useRecoilState } from "recoil";
+import { appState } from '../state/appState';
+
 import {
-  Text,
   ScrollView,
   SafeAreaView,
-  View
+  View, 
+  Text
 } from 'react-native';
+
 
 const BoxItem = ({ id, name, size, items }) => (
   <List.Item
       title={name}
       description={size}
       left={props => <List.Icon {...props} icon="box" />}
+      style={boxStyle} 
   />
 )
+const boxStyle = {
+  backgroundColor: "#eee", padding: 10, marginBottom: 10, shadow: 1,
+}
+
 const HomeScreen = () => {
 
   const boxData = [
@@ -40,6 +49,8 @@ const HomeScreen = () => {
       items: [],
     },
   ]
+
+  const [state, setState] = useRecoilState(appState)
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ padding: 12 }}>
@@ -50,6 +61,8 @@ const HomeScreen = () => {
           })
         }
         </ScrollView>
+        <View><Text>{state}</Text></View>
+        
       </View>
     </SafeAreaView>
   );
