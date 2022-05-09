@@ -39,7 +39,7 @@ const ScanScreen = () => {
     return (
       <View style={styles.container}>
         <Text style={{ margin: 10 }}>No access to camera</Text>
-        <Button title={'Allow Camera'} onPress={() => askForCameraPermission()} />
+        <Button title={'Kamera engedélyezése'} onPress={() => askForCameraPermission()} />
       </View>)
   }
 

@@ -9,7 +9,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './pages/HomeScreen';
 import ScanScreen from './pages/ScanScreen';
 import ProfileScreen from './pages/ProfileScreen';
-import SettingsScreen from './pages/SettingsScreen';
+import BoxScreen from './pages/BoxScreen';
+
 import { RecoilRoot } from 'recoil';
 
 const Stack = createStackNavigator();
@@ -18,7 +19,18 @@ const Nav = createBottomTabNavigator();
 function App() {
   return (
     <RecoilRoot>
-      <NavigationContainer>
+      
+    <NavigationContainer>
+    <Stack.Navigator>
+        <Stack.Screen name="Hűtő" component={HomeStack} options={{ headerShown: false }}/>
+        <Stack.Screen name="Doboz" component={BoxScreen} />
+    </Stack.Navigator>
+    </NavigationContainer>
+  </RecoilRoot>
+  );
+}
+
+const HomeStack = () => (
       <Nav.Navigator
       screenOptions={({ route }) => ({
         headerStyle: {
@@ -62,9 +74,5 @@ function App() {
       <Nav.Screen name="Home" component={ScanScreen} options={{ title: 'Doboz felvétele', headerShown: false }} />
       <Nav.Screen name="Profile" component={ProfileScreen} options={{ title: 'WIN' }} />
     </Nav.Navigator>
-    </NavigationContainer>
-  </RecoilRoot>
-  );
-}
-
+)
 export default App;
