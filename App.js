@@ -1,5 +1,7 @@
 
 import * as React from 'react';
+import 'react-native-gesture-handler';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,20 +12,19 @@ import HomeScreen from './pages/HomeScreen';
 import ScanScreen from './pages/ScanScreen';
 import ProfileScreen from './pages/ProfileScreen';
 import BoxScreen from './pages/BoxScreen';
-
+import EditItem from './pages/EditItem';
 import { RecoilRoot } from 'recoil';
-
 const Stack = createStackNavigator();
 const Nav = createBottomTabNavigator();
 
 function App() {
   return (
     <RecoilRoot>
-      
     <NavigationContainer>
     <Stack.Navigator>
         <Stack.Screen name="Hűtő" component={HomeStack} options={{ headerShown: false }}/>
         <Stack.Screen name="Doboz" component={BoxScreen} />
+        <Stack.Screen name="EditItem" component={EditItem} options={{ title: 'Termék'}}/>
     </Stack.Navigator>
     </NavigationContainer>
   </RecoilRoot>

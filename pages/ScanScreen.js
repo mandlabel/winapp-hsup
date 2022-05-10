@@ -7,7 +7,7 @@ const ScanScreen = () => {
 
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState('Not yet scanned')
+  const [text, setText] = useState('Scan')
 
   const askForCameraPermission = () => {
     (async () => {
