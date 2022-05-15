@@ -3,6 +3,7 @@ import * as React from 'react';
 import { List, Card, Title, Paragraph, Button } from 'react-native-paper';
 import { categoryImages } from '../utils/categoryImages';
 import { boxStyle } from '../styles/boxStyle';
+
 import {
   ScrollView,
   SafeAreaView,
@@ -31,16 +32,20 @@ const BoxScreen= ({
     navigation,
   }) => {
 
-    const handleItemSubmit = ({ name, amount, category }) => {
+    const handleItemSubmit = ({ id, boxid, name, amount, category }) => {
       navigation.navigate('EditItem', {
+        id,
+        boxid,
         name,
         amount,
         category,
       })
     }
 
-    const showAddProduct = () => {
-      alert('Add product :D')
+    const handleAddSubmit = ({ id }) => {
+      navigation.navigate('AddItem', {
+        id, // box id
+      })
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -48,7 +53,9 @@ const BoxScreen= ({
         {/*------------------------------------------------------------*/}
         <Card style={{ marginTop: 10, borderWidth: 1, padding: 10 }}>
           <Card.Title title={`Doboz neve: ${name}`} subtitle={`Méret: ${size}`}/>
-          <Button onPress={showAddProduct}>
+          <Button onPress={() => handleAddSubmit({
+            id: id,
+          })}>
             <Text>Termék felvétele</Text>
           </Button>
         </Card>
@@ -64,6 +71,8 @@ const BoxScreen= ({
               <TouchableOpacity key={index}
               onPress={() =>
                 handleItemSubmit({
+                  id: items.indexOf(item),
+                  boxid: id,
                   name: item.i_name,
                   amount: item.i_amount,
                   category: item.i_category,

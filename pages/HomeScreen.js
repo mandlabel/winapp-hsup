@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import { List } from 'react-native-paper';
 
@@ -6,6 +6,10 @@ import { useRecoilState } from "recoil";
 import { appState } from '../state/appState';
 
 import { boxStyle } from '../styles/boxStyle';
+
+import { db } from '../config/firebase'
+import { deleteDoc, doc, updateDoc, collection, onSnapshot, query } from 'firebase/firestore'
+
 import {
   ScrollView,
   SafeAreaView,
@@ -14,72 +18,28 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-
-const BoxItem = ({ id, name, size, items }) => (
-  <List.Item
-      title={name}
-      description={items.map(e => e.i_name).join(', ')}
-      left={props => <List.Icon {...props} icon="box" />}
-      style={boxStyle} 
-  />
-)
-
-
 const HomeScreen = ({ navigation }) => {
 
-  const boxData = [
-    {
-      id: 1,
-      name: "nagy doboz",
-      size: "nagy",
-      items: [{
-        i_name: "zeller",
-        i_amount: "10",
-        i_category: 1,
-      },
-      {
-        i_name: "eper",
-        i_amount: "30",
-        i_category: 2,
-      },
-      {
-        i_name: "teszt husi2",
-        i_amount: "10",
-        i_category: 3,
-      },
-      {
-        i_name: "teszt husi",
-        i_amount: "30",
-        i_category: 3,
-      },
-      {
-        i_name: "mirelit pizza",
-        i_amount: "10",
-        i_category: 4,
-      },
-      {
-        i_name: "valami ami nemtudom mi de lefagyasztottuk",
-        i_amount: "10",
-        i_category: 5,
-      },
-      ],
-    },
-    {
-      id: 2,
-      name: "közepes doboz",
-      size: "közepes",
-      items: [],
-    },
-    {
-      id: 3,
-      name: "kicsi doboz",
-      size: "kicsi",
-      items: [],
-    },
-  ]
+  const [boxData, setBoxData] = useState([])
 
-  const [state, setState] = useRecoilState(appState)
-
+  useEffect(() => {
+    const collectionRef = collection(db, 'boxes');
+    const q = query(collectionRef)
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      setBoxData(
+        querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          name: doc.data().name,
+          size: doc.data().size,
+          items: doc.data().items,
+        })
+      )
+    )
+  })
+    return unsubscribe;
+  }, [])
+  
+  
   const handleBoxSubmit = ({ id, size, name, items }) => {
     navigation.navigate('Doboz', {
       id,
@@ -99,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
               <TouchableOpacity key={index}
               onPress={() =>
                 handleBoxSubmit({
-                  id: b.id,
+                  id: boxData.indexOf(b),
                   size: b.size,
                   name: b.name,
                   items: b.items,
@@ -115,5 +75,14 @@ const HomeScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+const BoxItem = ({ id, name, size, items }) => (
+  <List.Item
+      title={name}
+      description={items.map(e => e.i_name).join(', ')}
+      left={props => <List.Icon {...props} icon="box" />}
+      style={boxStyle} 
+  />
+)
 
 export default HomeScreen;

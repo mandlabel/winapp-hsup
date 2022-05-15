@@ -12,20 +12,21 @@ import { TextInput, DefaultTheme,Button } from 'react-native-paper';
 import DropDown from "react-native-paper-dropdown";
 import {Provider} from 'react-native-paper'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { categoryList } from '../utils/categoryList';
+
 import { appState } from '../state/appState';
 import { useRecoilState } from 'recoil';
+import { categoryList } from '../utils/categoryList';
 
-const EditItem= ({
+const AddItem= ({
     route: {
-      params: { id, boxid, category, amount, name },
+      params: { id },
     },
     navigation,
   }) => {
 
-    const [editedName, setEditedName] = useState(name)
-    const [editedAmount, setEditedAmount] = useState(amount)
-    const [editedCategory, setEditedCategory] = useState(category)
+    const [editedName, setEditedName] = useState('Valami')
+    const [editedAmount, setEditedAmount] = useState('10')
+    const [editedCategory, setEditedCategory] = useState(0)
 
     const [showDropDown, setShowDropDown] = useState(false);
 
@@ -34,8 +35,7 @@ const EditItem= ({
 
     const [boxData, setBoxData] = useRecoilState(appState)
 
-    const handleDelete = (i_id) => {
-      navigation.navigate('Hűtő')
+    const addItemNow = () => {
     }
     return (
       <Provider theme={DefaultTheme}>
@@ -48,7 +48,7 @@ const EditItem= ({
             />
             <View>
               <DropDown
-                label={itemCategories[category-1].c_name}
+                label={itemCategories[editedCategory].c_name}
                 mode={"outlined"}
                 visible={showDropDown}
                 showDropDown={() => setShowDropDown(true)}
@@ -59,12 +59,8 @@ const EditItem= ({
               />
             </View>
             <View style={{ flexDirection:"row", padding: 10, justifyContent: 'center' }}>
-              <Button>
-                <Text style={{ color: "#000"}}>Módosítás <Ionicons name="pencil" size={25} color="black" /></Text>
-                
-              </Button>
-              <Button onPress={() => handleDelete(id)}>
-                <Text style={{ color: "red"}}>Törlés <Ionicons name="trash" size={25} color="red" /></Text>
+              <Button onPress={addItemNow}>
+                <Text style={{ color: "#000"}}>Hozzáad <Ionicons name="add" size={25} color="black" /></Text>
               </Button>
             </View>
             </View>
@@ -72,4 +68,4 @@ const EditItem= ({
         </Provider>
     )
   }
-export default EditItem
+export default AddItem
