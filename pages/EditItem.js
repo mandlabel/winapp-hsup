@@ -30,9 +30,7 @@ const EditItem= ({
     const [showDropDown, setShowDropDown] = useState(false);
 
     const handleItemName = (name) => { setEditedName(name) }
-    const handleItemAmount = (a) => { setEditedAmount(a) }
-
-    const [boxData, setBoxData] = useRecoilState(appState)
+    const handleItemAmount = (amount) => { setEditedAmount(amount) }
 
     const handleDelete = (i_id) => {
       navigation.navigate('Hűtő')
@@ -42,10 +40,7 @@ const EditItem= ({
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ margin: 10, padding: 5, marginBottom: 2 }}>
             <TextInput onChangeText={editedName => handleItemName(editedName)} style={{ color: "#eee", marginBottom: 10 }} value={editedName} mode="outlined" label="Élelmiszer neve"/>
-            <TextInput onChangeText={editedAmount => handleItemAmount(editedAmount)} style={{ color: "#eee", marginBottom: 10 }} value={editedAmount} mode="outlined" label="Élelmiszer mennyisége"
-              placeholder="useless placeholder"
-              keyboardType="numeric"
-            />
+            <TextInput keyboardType="numeric" onChangeText={editedAmount => handleItemAmount(editedAmount)} style={{ color: "#eee", marginBottom: 10 }} value={JSON.stringify(editedAmount)} mode="outlined" label="Élelmiszer mennyisége"/>
             <View>
               <DropDown
                 label={itemCategories[category-1].c_name}
