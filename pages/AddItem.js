@@ -66,6 +66,7 @@ const AddItem= ({
       await addDoc(collection(db, 'items'), newItem).then(() => {
         getColl();
       }) 
+      navigation.navigate('Hűtő')
     }
     return (
       <Provider theme={DefaultTheme}>

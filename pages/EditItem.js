@@ -39,12 +39,12 @@ const EditItem= ({
     }
 
     const handleEdit = async (i_id) => {
-      navigation.navigate('Hűtő')
       await updateDoc(doc(db, "items", i_id), {
         i_name: editedName,
         i_amount: editedAmount,
         i_category: editedCategory,
       });
+      navigation.navigate('Hűtő')
     }
     
     return (

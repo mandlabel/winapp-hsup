@@ -4,6 +4,8 @@ import { List, Card, Title, Paragraph, Button } from 'react-native-paper';
 import { categoryImages } from '../utils/categoryImages';
 import { boxStyle } from '../styles/boxStyle';
 
+import { db } from '../config/firebase';
+import { updateDoc, doc, deleteDoc, collection, onSnapshot, query } from 'firebase/firestore'
 import {
   ScrollView,
   SafeAreaView,
@@ -21,7 +23,7 @@ const BoxItem = ({ name, amount, category }) =>
     <List.Item
         title={name}
         description={amount}
-        left={props => <Image {...props} PlaceholderContent={<ActivityIndicator />} style={{ width: 50, height: 50 }} source={categoryImages[category-1]}
+        left={props => <Image {...props} PlaceholderContent={<ActivityIndicator />} style={{ width: 50, height: 50 }} source={categoryImages[category]}
         />}
         style={boxStyle} 
     />
@@ -34,21 +36,26 @@ const BoxScreen= ({
     navigation,
   }) => {
 
-    const handleItemSubmit = ({ id, boxid, name, amount, category }) => {
-      navigation.navigate('EditItem', {
-        id,
-        boxid,
-        name,
-        amount,
-        category,
-      })
+    const handleItemSubmit = async ({ id, boxid, name, amount, category }) => {
+      if(category !== 0) {
+        navigation.navigate('EditItem', {
+          id,
+          boxid,
+          name,
+          amount,
+          category,
+        })
+      } else { // Hibás törlése
+        await deleteDoc(doc(db, "items", id));
+        navigation.navigate('Hűtőm')
+      }
     }
 
     const handleAddSubmit = ({ id }) => {
-      navigation.navigate('AddItem', {
-        id, // box id
-      })
-    }
+        navigation.navigate('AddItem', {
+          id, // box id
+        })
+      }
     return (
         <SafeAreaView style={{ flex: 1 }}>
           

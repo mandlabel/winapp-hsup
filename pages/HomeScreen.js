@@ -10,12 +10,16 @@ import { boxStyle } from '../styles/boxStyle';
 import { db } from '../config/firebase'
 import { deleteDoc, doc, updateDoc, collection, onSnapshot, query } from 'firebase/firestore'
 
+import { winPic } from '../utils/winPic';
+
 import {
   ScrollView,
   SafeAreaView,
   View, 
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator,
+  Image
 } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
@@ -56,7 +60,16 @@ const HomeScreen = ({ navigation }) => {
     
   }, [])
   
-  
+  const BoxItem = ({ name, size }) => (
+    <List.Item
+        title={name}
+        description={'Kapacitás: ' + size + ' db'}
+        left={props => <Image {...props} PlaceholderContent={<ActivityIndicator />} style={{ width: 60, height: 60 }} source={winPic.logo}
+        />}
+        style={boxStyle} 
+    />
+  )
+
   const handleBoxSubmit = ({ id, size, name, items }) => {
     navigation.navigate('Doboz', {
       id,
@@ -93,13 +106,6 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const BoxItem = ({ id, name, size, items }) => (
-  <List.Item
-      title={name}
-      // description={items.map(e => e.i_name).join(', ')}
-      left={props => <List.Icon {...props} icon="box" />}
-      style={boxStyle} 
-  />
-)
+
 
 export default HomeScreen;
