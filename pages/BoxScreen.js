@@ -68,6 +68,7 @@ const BoxScreen= ({
         <View style={{ padding: 12 }}>
         {
           items.map((item, index) => {
+            if(item.box_index === id) {
             return (
               <TouchableOpacity key={index}
               onPress={() =>
@@ -83,6 +84,7 @@ const BoxScreen= ({
               </TouchableOpacity>
               
             )
+          }
           })
         }
         </View>

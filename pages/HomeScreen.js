@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react';
 import { List } from 'react-native-paper';
 
 import { useRecoilState } from "recoil";
-import { appState } from '../state/appState';
-
+import { itemsState } from '../state/itemsState'
+import { boxState } from '../state/boxState'
 import { boxStyle } from '../styles/boxStyle';
 
 import { db } from '../config/firebase'
@@ -20,23 +20,39 @@ import {
 
 const HomeScreen = ({ navigation }) => {
 
-  const [boxData, setBoxData] = useState([])
+  const [boxData, setBoxData] = useRecoilState(boxState)
+  const [itemsData, setItemsData] = useRecoilState(itemsState)
 
   useEffect(() => {
+
+    const collectionRefItems = collection(db, 'items');
+    const qu = query(collectionRefItems)
+    const unsubscribe2 = onSnapshot(qu, querySnapshot => {
+    setItemsData(
+      querySnapshot.docs.map(doc => ({
+        box_index: doc.data().box_index,
+        i_name: doc.data().i_name,
+        i_amount: doc.data().i_amount,
+        i_category: doc.data().i_category,
+      })
+    )
+    )
+    })
+
     const collectionRef = collection(db, 'boxes');
     const q = query(collectionRef)
     const unsubscribe = onSnapshot(q, querySnapshot => {
       setBoxData(
         querySnapshot.docs.map(doc => ({
-          id: doc.id,
+          id: doc.id.indexOf(doc.id),
           name: doc.data().name,
           size: doc.data().size,
-          items: doc.data().items,
         })
       )
     )
-  })
-    return unsubscribe;
+    })
+  return unsubscribe, unsubscribe2;
+    
   }, [])
   
   
@@ -59,13 +75,13 @@ const HomeScreen = ({ navigation }) => {
               <TouchableOpacity key={index}
               onPress={() =>
                 handleBoxSubmit({
-                  id: boxData.indexOf(b),
+                  id: b.id,
                   size: b.size,
                   name: b.name,
-                  items: b.items,
+                  items: itemsData,
                 })
               }>
-                <BoxItem id={b.id} size={b.size} name={b.name} items={b.items}/>
+                <BoxItem id={b.id} size={b.size} name={b.name}/>
               </TouchableOpacity>
             )
           })
@@ -79,7 +95,7 @@ const HomeScreen = ({ navigation }) => {
 const BoxItem = ({ id, name, size, items }) => (
   <List.Item
       title={name}
-      description={items.map(e => e.i_name).join(', ')}
+      // description={items.map(e => e.i_name).join(', ')}
       left={props => <List.Icon {...props} icon="box" />}
       style={boxStyle} 
   />
