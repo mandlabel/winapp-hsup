@@ -30,6 +30,7 @@ const HomeScreen = ({ navigation }) => {
     const unsubscribe2 = onSnapshot(qu, querySnapshot => {
     setItemsData(
       querySnapshot.docs.map(doc => ({
+        id: doc.id,
         box_index: doc.data().box_index,
         i_name: doc.data().i_name,
         i_amount: doc.data().i_amount,
@@ -44,7 +45,7 @@ const HomeScreen = ({ navigation }) => {
     const unsubscribe = onSnapshot(q, querySnapshot => {
       setBoxData(
         querySnapshot.docs.map(doc => ({
-          id: doc.id.indexOf(doc.id),
+          id: doc.data().id,
           name: doc.data().name,
           size: doc.data().size,
         })

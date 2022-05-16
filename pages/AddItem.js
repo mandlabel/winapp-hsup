@@ -44,6 +44,7 @@ const AddItem= ({
       const unsubscribe2 = onSnapshot(qu, querySnapshot => {
         setAllItems(
         querySnapshot.docs.map(doc => ({
+          id: doc.id,
           box_index: doc.data().box_index,
           i_name: doc.data().i_name,
           i_amount: doc.data().i_amount,
@@ -55,7 +56,7 @@ const AddItem= ({
       })
     }
 
-    const addItemNow = async () => {    
+    const addItemNow = async () => {   
       const newItem = {
         box_index: id,
         i_amount: editedAmount,
@@ -64,7 +65,7 @@ const AddItem= ({
       }
       await addDoc(collection(db, 'items'), newItem).then(() => {
         getColl();
-      })
+      }) 
     }
     return (
       <Provider theme={DefaultTheme}>

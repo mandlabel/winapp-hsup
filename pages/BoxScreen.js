@@ -11,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
   Alert,
 } from 'react-native';
 
@@ -20,7 +21,7 @@ const BoxItem = ({ name, amount, category }) =>
     <List.Item
         title={name}
         description={amount}
-        left={props => <Image {...props} style={{ width: 50, height: 50 }} source={categoryImages[category-1]}
+        left={props => <Image {...props} PlaceholderContent={<ActivityIndicator />} style={{ width: 50, height: 50 }} source={categoryImages[category-1]}
         />}
         style={boxStyle} 
     />
@@ -73,7 +74,7 @@ const BoxScreen= ({
               <TouchableOpacity key={index}
               onPress={() =>
                 handleItemSubmit({
-                  id: items.indexOf(item),
+                  id: item.id,
                   boxid: id,
                   name: item.i_name,
                   amount: item.i_amount,
