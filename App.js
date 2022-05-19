@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import HomeScreen from './pages/HomeScreen';
 import ScanScreen from './pages/ScanScreen';
@@ -14,12 +15,15 @@ import ProfileScreen from './pages/ProfileScreen';
 import BoxScreen from './pages/BoxScreen';
 import EditItem from './pages/EditItem';
 import AddItem from './pages/AddItem';
+import AddHungarianItem from './pages/AddHungarianItem';
+
 import { RecoilRoot } from 'recoil';
 const Stack = createStackNavigator();
 const Nav = createBottomTabNavigator();
 
 function App() {
   return (
+    <RootSiblingParent>
     <RecoilRoot>
     <NavigationContainer>
     <Stack.Navigator>
@@ -27,9 +31,11 @@ function App() {
         <Stack.Screen name="Doboz" component={BoxScreen} />
         <Stack.Screen name="EditItem" component={EditItem} options={{ title: 'Termék'}}/>
         <Stack.Screen name="AddItem" component={AddItem} options={{ title: 'Hozzáadás'}}/>
+        <Stack.Screen name="AddHungarianItem" component={AddHungarianItem} options={{ title: 'Magyar specialitások'}}/>
     </Stack.Navigator>
     </NavigationContainer>
   </RecoilRoot>
+  </RootSiblingParent>
   );
 }
 

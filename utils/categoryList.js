@@ -1,5 +1,9 @@
 export const categoryList = [
     {
+      label: "Magyar specialitások",
+      value: "0",
+    },
+    {
       label: "Zöldségek",
       value: "1",
     },

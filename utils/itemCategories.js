@@ -1,5 +1,9 @@
 export const itemCategories = [
     {
+      c_id: 0,
+      c_name: "magyar specialitások",
+    },
+    {
       c_id: 1,
       c_name: "zöldségek",
     },

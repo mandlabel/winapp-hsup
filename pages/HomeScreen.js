@@ -13,13 +13,15 @@ import { deleteDoc, doc, updateDoc, collection, onSnapshot, query } from 'fireba
 import { winPic } from '../utils/winPic';
 
 import {
+  ImageBackground,
   ScrollView,
   SafeAreaView,
   View, 
   Text,
   TouchableOpacity,
   ActivityIndicator,
-  Image
+  Image,
+  Dimensions
 } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
@@ -81,8 +83,8 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ padding: 12 }}>
-        <ScrollView style={{ marginTop: 15 }}>
+      <View style={{ padding: 0 }}>
+        <ScrollView style={{ marginTop: 15, padding: 2 }}>
         {
           boxData.map((b, index) => {
             return (
@@ -101,7 +103,9 @@ const HomeScreen = ({ navigation }) => {
           })
         }
         </ScrollView>
+        
       </View>
+      
     </SafeAreaView>
   );
 };

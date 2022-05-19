@@ -1,5 +1,5 @@
 export const categoryImages = [
-    require('../assets/lejart.png'),
+    require('../assets/hun.png'),
     require('../assets/1.png'),
     require('../assets/2.png'),
     require('../assets/3.png'),

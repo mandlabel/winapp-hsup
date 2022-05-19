@@ -30,6 +30,7 @@
     "react-native-paper": "^4.12.1",
     "react-native-paper-dropdown": "^1.0.7",
     "react-native-picker": "^4.3.7",
+    "react-native-root-toast": "^3.4.0",
     "react-native-web": "0.17.1",
     "recoil": "^0.7.2"
   },

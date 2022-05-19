@@ -8,8 +8,7 @@ import {
     Text,
     StyleSheet,
     ImageBackground,
-    Dimensions,
-    ActivityIndicator
+    Dimensions
 } from 'react-native';
 import { TextInput, DefaultTheme,Button } from 'react-native-paper';
 import DropDown from "react-native-paper-dropdown";
@@ -19,20 +18,19 @@ import Toast from 'react-native-root-toast';
 import { itemsState } from '../state/itemsState';
 import { useRecoilState } from 'recoil';
 import { categoryList } from '../utils/categoryList';
-import { categoryImages } from '../utils/categoryImages'
 import { hungarianFoods } from '../utils/hungarianFoods'
 import { db } from '../config/firebase'
 import { deleteDoc, doc, setDoc, collection, onSnapshot, query, updateDoc, addDoc } from 'firebase/firestore'
 import { hungarianList } from './../utils/hungarianList';
 
-const AddItem= ({
+const AddHungarianItem= ({
     route: {
       params: { id }, // id of box
     },
     navigation,
   }) => {
 
-    const [editedName, setEditedName] = useState('Valami')
+    const [editedName, setEditedName] = useState(0)
     const [editedAmount, setEditedAmount] = useState('10')
     const [editedCategory, setEditedCategory] = useState(0)
 
@@ -40,7 +38,8 @@ const AddItem= ({
     const [checked, setChecked] = useState('first');
 
     const [showDropDown, setShowDropDown] = useState(false);
-    const [showDropDownHun, setShowDropDownHun] = useState(false);
+    const [showDrop, setShowDrop] = useState(false);
+
     const handleItemName = (name) => { setEditedName(name) }
     const handleItemAmount = (a) => { setEditedAmount(a) }
 
@@ -67,15 +66,13 @@ const AddItem= ({
         box_index: id,
         i_amount: editedAmount,
         i_category: editedCategory,
-        i_name: editedName,
+        i_name: hungarianFoods[editedName].c_name,
       }
       await addDoc(collection(db, 'items'), newItem).then(() => {
         getColl();
       }) 
       navigation.navigate('Hűtő')
-      Toast.show(
-          'Siker! Hozzáadva.'
-        , {
+      Toast.show('Asd', {
         duration: Toast.durations.SHORT,
       })
     }
@@ -83,7 +80,19 @@ const AddItem= ({
       <Provider theme={DefaultTheme}>
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ margin: 10, padding: 5, marginBottom: 2 }}>
-            <TextInput required onChangeText={editedName => handleItemName(editedName)} style={{ color: "#eee", marginBottom: 10 }} value={editedName} mode="outlined" label="Élelmiszer neve"/>
+            <View>
+              <DropDown
+                label={hungarianFoods[editedName].c_name}
+                mode={"outlined"}
+                visible={showDrop}
+                showDropDown={() => setShowDrop(true)}
+                onDismiss={() => setShowDrop(false)}
+                value={editedName}
+                required
+                setValue={setEditedName}
+                list={hungarianList}
+              />
+            </View>
 
             <TextInput required onChangeText={editedAmount => handleItemAmount(editedAmount)} style={{ color: "#eee", marginBottom: 10 }} value={editedAmount} mode="outlined" label="Élelmiszer mennyisége"
               placeholder="kérlek add meg a mértéket."
@@ -94,7 +103,7 @@ const AddItem= ({
                 label={itemCategories[editedCategory].c_name}
                 mode={"outlined"}
                 visible={showDropDown}
-                showDropDown={() => setShowDropDown(true)}
+                showDropDown={() => setShowDropDown(false)}
                 onDismiss={() => setShowDropDown(false)}
                 value={editedCategory}
                 required
@@ -107,9 +116,14 @@ const AddItem= ({
                 <Text style={{ color: "#000"}}>Hozzáad <Ionicons name="add" size={25} color="black" /></Text>
               </Button>
             </View>
+
+            <View style={{ bottom: '0%'}}>
+            <ImageBackground source={require('../assets/hungary.png')} style={{ display: 'flex', transform: [{ rotate: '0deg' }], width: Dimensions.get('window').width, height: 100 }}>
+            </ImageBackground>
+            </View>
             </View>
         </SafeAreaView>
         </Provider>
     )
   }
-export default AddItem
+export default AddHungarianItem
